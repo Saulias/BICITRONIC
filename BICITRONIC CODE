@@ -1,0 +1,58 @@
+int Trig = 12;
+int Echo = 13;
+int green = 2;
+int yellow = 3;
+int red = 4;
+int luz = 5; // revisar pin 5
+
+int valorluz;
+void setup() {
+  
+  Serial.begin(9600);
+  pinMode (Trig,OUTPUT);
+  pinMode (Echo,INPUT);
+
+  pinMode (green,OUTPUT);
+  pinMode (yellow,OUTPUT);
+  pinMode (red,OUTPUT);
+
+  pinMode (luz,INPUT); // etrada de señal de luz
+
+}
+
+void loop() {
+
+  long duracion;
+  long distancia;
+
+  digitalWrite (Trig,LOW);
+  delayMicroseconds(4);
+  digitalWrite (Trig,HIGH);
+  delayMicroseconds(10);
+  digitalWrite (Trig,LOW);
+
+  duracion = pulseIn (Echo,HIGH);
+  duracion = duracion/2;
+
+  distancia = duracion/29;
+
+  valorluz = digitalRead (luz); // lee lo que hay en luz
+  
+  if( distancia>=5 && distancia<=100 && valorluz==0 ){
+    digitalWrite (red,HIGH);
+  }else digitalWrite (red,LOW);
+
+  if( distancia>=101 && distancia<=200 && valorluz==0 ){
+    digitalWrite (yellow,HIGH);
+  }else digitalWrite (yellow,LOW);
+
+  if( distancia>=201/* && distancia<=700*/ && valorluz==0 ){
+    digitalWrite (green,HIGH);
+  }else digitalWrite (green,LOW);
+
+
+  Serial.println(distancia);
+
+  delay(50);
+  
+}
